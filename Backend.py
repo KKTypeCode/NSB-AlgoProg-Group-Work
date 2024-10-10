@@ -1,4 +1,6 @@
 from openpyxl import * #type: ignore
+from openpyxl.utils import get_column_letter
+
 """
     REMINDER:
     - DO NOT FORGET TO INSTALL OPENPYXL IN YOUR MACHINE!
@@ -10,5 +12,16 @@ from openpyxl import * #type: ignore
 """
 
 wb = load_workbook('Database.xlsx')
-db = wb.active #TO MAKE FILE EDITABLE
+db = wb.active # TO MAKE FILE EDITABLE
 
+# WORKSPACE
+
+rowspan = int(input())
+colspan = int(input())
+
+for row in range(2, rowspan + 2): # START AT 2 BECAUSE INPUT START AT ROW 2
+    for col in range(2, colspan + 2): # START AT 2 BECAUSE INPUT START AT COL B
+        char = get_column_letter(col)
+        
+
+wb.save('Database.xlsx') # SAVE ALL CHANGES
