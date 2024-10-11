@@ -1,6 +1,6 @@
 from openpyxl import * #type: ignore
 from openpyxl.utils import get_column_letter
-from pandas import * #type: ignore
+
 """
     REMINDER:
     - DO NOT FORGET TO INSTALL OPENPYXL IN YOUR MACHINE!
@@ -11,44 +11,39 @@ from pandas import * #type: ignore
     - CODE CANNOT WORK WHEN EXCEL FILE IS BEING OPENED.
 """
 
+# ADD NEW ENTRY FOR INCOME & EXPENSE
+
 def income(name, value=0, category='income', delivered=False):
 	wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
 	db = wb.active 
  
-	rowspan = 1
-	colcheck = 2
-	for row in range(2, rowspan+2):
-		while db[str(row) + str(colcheck)] != '':
-			rowspan += 1
-			for col in range(2,3):
-				db[str(row) + str(col)] = name
-				db[str(row) + str(col+1)] = 'I'
-				db[str(row) + str(col+2)] = value
-				db[str(row) + str(col+3)] = category
-				db[str(row) + str(col+4)] = delivered
-     
+	row = 2
+	col = 2
+	while db.cell(row=row, column=col).value != None:
+		row += 1
+
+	db[get_column_letter(col) + str(row)] = name
+	db[get_column_letter(col+1) + str(row)] = 'I'
+	db[get_column_letter(col+2) + str(row)] = value
+	db[get_column_letter(col+3) + str(row)] = category
+	db[get_column_letter(col+4) + str(row)] = delivered
+	
 	wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
 
 def expense(name, value=0, category='expense', delivered=False):
 	wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
 	db = wb.active 
  
-	rowspan = 1
-	colcheck = 2
-	for row in range(2, rowspan+2):
-		if db[str(row) + str(colcheck)] != '':
-			rowspan += 1
-		else:
-			for col in range(2,3):
-				if db[str(row) + str(col)] != '':
-					continue
-				else:
-					db[str(row) + str(col)] = name
-					db[str(row) + str(col+1)] = 'E'
-					db[str(row) + str(col+2)] = value
-					db[str(row) + str(col+3)] = category
-					db[str(row) + str(col+4)] = delivered 
+	row = 2
+	col = 2
+	while db.cell(row=row, column=col).value != None:
+		row += 1
+
+	db[get_column_letter(col) + str(row)] = name
+	db[get_column_letter(col+1) + str(row)] = 'E'
+	db[get_column_letter(col+2) + str(row)] = value
+	db[get_column_letter(col+3) + str(row)] = category
+	db[get_column_letter(col+4) + str(row)] = delivered
           
 	wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
 
-# NOT COMPLETED // STILL HAS ERROR
