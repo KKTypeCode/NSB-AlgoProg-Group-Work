@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import *
+from tkinter import * #type: ignore
 
 root = tk.Tk()
 

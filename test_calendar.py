@@ -1,5 +1,5 @@
 # Import Required Library
-from tkinter import *
+from tkinter import * #type: ignore
 from tkcalendar import Calendar
 
 # Create Object

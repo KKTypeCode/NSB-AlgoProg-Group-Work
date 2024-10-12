@@ -1,5 +1,5 @@
 # import all functions from the tkinter 
-from tkinter import *
+from tkinter import * #type: ignore
 
 # Create a GUI window 
 root = Tk() 
