@@ -1,7 +1,3 @@
-from openpyxl import * #type: ignore
-from openpyxl.utils import get_column_letter
-import datetime as dt
-
 """
     REMINDER:
     - DO NOT FORGET TO INSTALL OPENPYXL IN YOUR MACHINE!
@@ -27,7 +23,9 @@ def gen_id_key():
     return id_key
 
 # GENERATE CURRENT DATE AND TIME
-    
+
+import datetime as dt
+
 def date():
     current_date = dt.datetime.now().date()
     return current_date.strftime("%Y-%m-%d")
@@ -38,6 +36,26 @@ def time():
     return current_time.strftime("%H:%M:%S")
 
 # ADD INCOME AND EXPENSE ENTRIES TO THE DATABASE
+
+from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter
+
+def balance(new_value):
+    wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
+    db = wb.active
+    
+    balance = db['L2'].value
+    
+    for row in db.iter_rows(min_row=2, max_row=db.max_row, min_col=4, max_col=4):
+        for cell in row:
+            if cell.value == 'I':
+                balance += new_value
+            elif cell.value == 'E':
+                balance -= new_value
+
+    db['L2'] = balance
+    wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
+    wb.close()
     
 def income(name, value=0, category='income', delivered=False):
 	wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
@@ -56,6 +74,8 @@ def income(name, value=0, category='income', delivered=False):
 	db[get_column_letter(col+5) + str(row)] = delivered
 	db[get_column_letter(col+6) + str(row)] = gen_id_key()
 	db[get_column_letter(col+7) + str(row)] = f"{date()} / {time()}"
+
+	balance(value)
 
 	wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
 
@@ -76,6 +96,8 @@ def expense(name, value=0, category='expense', delivered=False):
 	db[get_column_letter(col+5) + str(row)] = delivered
 	db[get_column_letter(col+6) + str(row)] = gen_id_key()
 	db[get_column_letter(col+7) + str(row)] = f"{date()} / {time()}"
+ 
+	balance(value)
     
 	wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
 
