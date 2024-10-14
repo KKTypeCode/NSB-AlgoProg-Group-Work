@@ -39,6 +39,7 @@ def limiter ():
                         except KeyboardInterrupt:
                             print("Program terminated")
                             break
+                    setup_limit()
                 case 2:
                     
                     # To See the Limit
