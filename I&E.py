@@ -1,7 +1,3 @@
-from openpyxl import * #type: ignore
-from openpyxl.utils import get_column_letter
-import datetime as dt
-
 """
     REMINDER:
     - DO NOT FORGET TO INSTALL OPENPYXL IN YOUR MACHINE!
@@ -10,6 +6,7 @@ import datetime as dt
     - THE MODULE'S FILE MANIPULATOR CAN ONLY WORK WITH .xlsx FILE FORMATS (2010 ABOVE)
       AND CANNOT WORK WITH OTHER EXCEL FILE FORMATS.
     - CODE CANNOT WORK WHEN EXCEL FILE IS BEING OPENED.
+    - NEVER EDIT THE VALUES WRITTEN ON 'OTHER INFO'.
 """
 
 # GENERATE A SPECIAL ID KEY TO ALLOW DIFFERENCE BETWEEN ENTRIES
@@ -27,7 +24,9 @@ def gen_id_key():
     return id_key
 
 # GENERATE CURRENT DATE AND TIME
-    
+
+import datetime as dt
+
 def date():
     current_date = dt.datetime.now().date()
     return current_date.strftime("%Y-%m-%d")
@@ -38,6 +37,31 @@ def time():
     return current_time.strftime("%H:%M:%S")
 
 # ADD INCOME AND EXPENSE ENTRIES TO THE DATABASE
+
+from openpyxl import load_workbook
+from openpyxl.utils import get_column_letter
+
+def balance(new_value, ie, delivered):
+    wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
+    db = wb.active
+    
+    balance = db['L2'].value
+    print(f"Current balance: {balance}")
+    
+    if balance is None:
+        balance = 0
+        
+    if delivered == True:
+        if ie == 'I':
+            balance += new_value
+        elif ie == 'E':
+            balance -= new_value
+    
+    print(f"New balance: {balance}")
+    
+    db['L2'].value = balance
+    wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
+    wb.close()
     
 def income(name, value=0, category='income', delivered=False):
 	wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
@@ -56,6 +80,8 @@ def income(name, value=0, category='income', delivered=False):
 	db[get_column_letter(col+5) + str(row)] = delivered
 	db[get_column_letter(col+6) + str(row)] = gen_id_key()
 	db[get_column_letter(col+7) + str(row)] = f"{date()} / {time()}"
+
+	balance(value, 'I', delivered)
 
 	wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
 
@@ -76,6 +102,8 @@ def expense(name, value=0, category='expense', delivered=False):
 	db[get_column_letter(col+5) + str(row)] = delivered
 	db[get_column_letter(col+6) + str(row)] = gen_id_key()
 	db[get_column_letter(col+7) + str(row)] = f"{date()} / {time()}"
+ 
+	balance(value, 'E', delivered)
     
 	wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
 
@@ -95,14 +123,19 @@ def change(name=None, ie=None, value=None, category=None, delivered=None):
     wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
     db = wb.active
 
-    entry_list = []
+    entry_list = {}
     
-    print("Available entries:")
+    print("Available entries:")  
     for column in db.iter_cols(min_row=2, min_col=2, max_col=2):
         for cell in column:
             if cell.value != None:
-                entry_list.append(cell.value)
-
+                for columnid in db.iter_cols(min_row=8, min_col=2, max_col=2):
+                    for cellid in columnid:
+                        entry_list[cell] = cellid
+                        print(cell, cellid, end='\n')
+    
+    #INCOMPLETE // NEED TO FIND ID ACCORDING TO ROW NUMBER POSITION OF ENTRY
+    
     selected = str(input('Select entry to change: ')).strip().upper()
 
     if selected not in entry_list:
@@ -114,8 +147,10 @@ def change(name=None, ie=None, value=None, category=None, delivered=None):
         db[get_column_letter(4) + str(index)] = value if value != None else db[get_column_letter(4) + str(index)].value
         db[get_column_letter(5) + str(index)] = category.upper() if category != None else db[get_column_letter(5) + str(index)].value
         db[get_column_letter(6) + str(index)] = delivered if delivered != None else db[get_column_letter(6) + str(index)].value
+        balance(value, ie, delivered)
         
     read()
+
     wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
     
 def delete():
@@ -130,24 +165,26 @@ def delete():
             if cell.value != None:
                 entry_list.append(cell.value)
 
+    print(entry_list)
+
     selected = str(input('Select entry to delete: ')).strip().upper()
 
     if selected not in entry_list:
         print('Entry does not exist.')
     else:
         index = entry_list.index(selected) + 2 
-        db[get_column_letter(2) + str(index)] = None
-        db[get_column_letter(3) + str(index)] = None
-        db[get_column_letter(4) + str(index)] = None
-        db[get_column_letter(5) + str(index)] = None
-        db[get_column_letter(6) + str(index)] = None
-        db[get_column_letter(7) + str(index)] = None
+        db[get_column_letter(2) + str(index)].value = None
+        db[get_column_letter(3) + str(index)].value = None
+        db[get_column_letter(4) + str(index)].value = None
+        db[get_column_letter(5) + str(index)].value = None
+        db[get_column_letter(6) + str(index)].value = None
+        db[get_column_letter(7) + str(index)].value = None
         
     read()
     wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
 
 # TESTING
-income('Commission', 1000, delivered=True)
+
 
 # NOTE:
 # CODE HAS NOT BEEN FULLY TESTED YET // STILL NEED MORE TESTING
