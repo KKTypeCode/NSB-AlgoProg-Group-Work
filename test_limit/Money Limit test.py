@@ -1,4 +1,6 @@
 from notifypy import Notify
+# pip install notify_py
+
 def limiter ():
     f = open("Experimental Code/Limit.txt" , "r")
     limit = 0
@@ -28,7 +30,7 @@ def limiter ():
                                 elif 0 < limit < 100:
                                     print("Limit too low")
                                 elif limit ==  0:
-                                    file2.write("")
+                                    file2.write("0")
                                     file2.close()
                                     print("Limit Removed")
                                 else:
@@ -38,7 +40,6 @@ def limiter ():
                             return()
                         except KeyboardInterrupt:
                             print("Program terminated")
-                            break
                     setup_limit()
                 case 2:
                     
