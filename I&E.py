@@ -45,7 +45,12 @@ def balance(new_value, ie, delivered):
     wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
     db = wb.active
     
-    balance = db['L2'].value
+    balance = 0
+    
+    for column in db.iter_cols(min_row=2, max_row=2, min_col=12, max_col=12):
+        for cell in column:
+            if cell.value != None:
+                balance = cell.value
     print(f"Current balance: {balance}")
     
     if balance is None:
@@ -56,10 +61,9 @@ def balance(new_value, ie, delivered):
             balance += new_value
         elif ie == 'E':
             balance -= new_value
-    
+
     print(f"New balance: {balance}")
-    
-    db['L2'].value = balance
+    db[get_column_letter(12) + str(2)].value = balance
     wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
     wb.close()
     
@@ -184,7 +188,7 @@ def delete():
     wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
 
 # TESTING
-
+balance(5000, 'I', True)
 
 # NOTE:
 # CODE HAS NOT BEEN FULLY TESTED YET // STILL NEED MORE TESTING
