@@ -127,7 +127,7 @@ def change(name=None, ie=None, value=None, category=None, delivered=None):
     wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
     db = wb.active
 
-    entry_list = {}
+    entry_list = []
     
     print("Available entries:")  
     for column in db.iter_cols(min_row=2, min_col=3, max_col=3):
@@ -142,9 +142,17 @@ def change(name=None, ie=None, value=None, category=None, delivered=None):
     
     #INCOMPLETE // NEED TO FIND ID ACCORDING TO ROW NUMBER POSITION OF ENTRY
     
-    entryselect = str(input('Select entry to change: ')).strip().upper()
-    dateselect = str(input('Select date to change (type by exact format): '))
+    entryselect = str(input('Select entry to change: ')).upper().strip()
+    dateselect = str(input('Select date to change (type by exact format): ')).strip()
+    idselect = str(input('Select ID to change (type by exact format): ')).strip() 
 
+    # NEED TO FIND ROW NUMBER POSITION OF ENTRY BY ID OR DATE
+    
+    # NEED IF STATEMENT FOR VALIDATING BOTH DATE & ID FORMAT
+    
+    # NEED TO STORE ENTRY, DATE, & ID IN ONE INNER LIST, PER ENTRY, THEN STORE ALL INNER LISTS IN 'entry_list'
+    
+    # NEED TO FIND THE CORRESPONDING ENTRY, DATE, & ID IN 'entry_list'
     if entryselect not in entry_list:
         print('Entry does not exist.')
     else:
@@ -157,6 +165,7 @@ def change(name=None, ie=None, value=None, category=None, delivered=None):
             db[get_column_letter(4) + str(index)] = value if value != None else db[get_column_letter(4) + str(index)].value
             db[get_column_letter(5) + str(index)] = category.upper() if category != None else db[get_column_letter(5) + str(index)].value
             db[get_column_letter(6) + str(index)] = delivered if delivered != None else db[get_column_letter(6) + str(index)].value
+            db[get_column_letter(9) + str(index)] = f"{date()} / {time()}"
             balance(value, ie, delivered)
         
     read()
@@ -190,7 +199,7 @@ def delete():
         db[get_column_letter(6) + str(index)].value = None
         db[get_column_letter(7) + str(index)].value = None
         db[get_column_letter(8) + str(index)].value = None
-        balance(db[get_column_letter(4) + str(index)].value, 'E' if db[get_column_letter(3) + str(index)].value == 'I' else 'I', db[get_column_letter(6) + str(index)].value)
+        balance(db[get_column_letter(5) + str(index)].value, 'E' if db[get_column_letter(3) + str(index)].value == 'I' else 'I', db[get_column_letter(7) + str(index)].value)
         
     read()
     wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
