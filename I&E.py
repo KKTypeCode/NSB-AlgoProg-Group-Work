@@ -130,28 +130,34 @@ def change(name=None, ie=None, value=None, category=None, delivered=None):
     entry_list = {}
     
     print("Available entries:")  
-    for column in db.iter_cols(min_row=2, min_col=2, max_col=2):
+    for column in db.iter_cols(min_row=2, min_col=3, max_col=3):
+    # GET ID OF ENTRIES FIRST
         for cell in column:
             if cell.value != None:
-                for columnid in db.iter_cols(min_row=8, min_col=2, max_col=2):
+                for columnid in db.iter_cols(min_row=2, min_col=2, max_col=2):
+                # THEN GET THE ENTRY NAMES OF THEIR CORRESPONDING IDs
                     for cellid in columnid:
                         entry_list[cell] = cellid
                         print(cell, cellid, end='\n')
     
     #INCOMPLETE // NEED TO FIND ID ACCORDING TO ROW NUMBER POSITION OF ENTRY
     
-    selected = str(input('Select entry to change: ')).strip().upper()
+    entryselect = str(input('Select entry to change: ')).strip().upper()
+    dateselect = str(input('Select date to change (type by exact format): '))
 
-    if selected not in entry_list:
+    if entryselect not in entry_list:
         print('Entry does not exist.')
     else:
-        index = entry_list.index(selected) + 2 
-        db[get_column_letter(2) + str(index)] = name if name != None else db[get_column_letter(2) + str(index)].value
-        db[get_column_letter(3) + str(index)] = ie.upper() if ie != None else db[get_column_letter(3) + str(index)].value
-        db[get_column_letter(4) + str(index)] = value if value != None else db[get_column_letter(4) + str(index)].value
-        db[get_column_letter(5) + str(index)] = category.upper() if category != None else db[get_column_letter(5) + str(index)].value
-        db[get_column_letter(6) + str(index)] = delivered if delivered != None else db[get_column_letter(6) + str(index)].value
-        balance(value, ie, delivered)
+        if dateselect not in entry_list.get(key=entryselect):
+            print('Date with the corresponding entry does not exist.')
+        else:
+            index = entry_list.index(entryselect)
+            db[get_column_letter(2) + str(index)] = name if name != None else db[get_column_letter(2) + str(index)].value
+            db[get_column_letter(3) + str(index)] = ie.upper() if ie != None else db[get_column_letter(3) + str(index)].value
+            db[get_column_letter(4) + str(index)] = value if value != None else db[get_column_letter(4) + str(index)].value
+            db[get_column_letter(5) + str(index)] = category.upper() if category != None else db[get_column_letter(5) + str(index)].value
+            db[get_column_letter(6) + str(index)] = delivered if delivered != None else db[get_column_letter(6) + str(index)].value
+            balance(value, ie, delivered)
         
     read()
 
@@ -164,7 +170,7 @@ def delete():
     entry_list = []
     
     print("Available entries:")
-    for column in db.iter_cols(min_row=2, min_col=2, max_col=2):
+    for column in db.iter_cols(min_row=2, max_row=db.max_row, min_col=2, max_col=2):
         for cell in column:
             if cell.value != None:
                 entry_list.append(cell.value)
@@ -183,12 +189,14 @@ def delete():
         db[get_column_letter(5) + str(index)].value = None
         db[get_column_letter(6) + str(index)].value = None
         db[get_column_letter(7) + str(index)].value = None
+        db[get_column_letter(8) + str(index)].value = None
+        balance(db[get_column_letter(4) + str(index)].value, 'E' if db[get_column_letter(3) + str(index)].value == 'I' else 'I', db[get_column_letter(6) + str(index)].value)
         
     read()
     wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
 
 # TESTING
-balance(5000, 'I', True)
+delete()
 
 # NOTE:
 # CODE HAS NOT BEEN FULLY TESTED YET // STILL NEED MORE TESTING
