@@ -1,10 +1,9 @@
 import tkinter as tk
-from tkinter import *
 from tkinter import ttk
 
 root = tk.Tk()
 root.geometry('300x300')
-title = Label(root, text="Expense Tracker Page")
+title = tk.Label(root, text="Expense Tracker Page")
 title.pack()
 
 def add_expense():
