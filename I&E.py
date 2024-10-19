@@ -113,7 +113,7 @@ def expense(name, value=0, category='expense', delivered=False):
 
 # MODIFY ENTRIES IN THE DATABASE
 
-def read():
+def read_all():
     wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
     db = wb.active
     
@@ -126,49 +126,71 @@ def read():
 def change(name=None, ie=None, value=None, category=None, delivered=None):
     wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
     db = wb.active
-
+    
+    data_list = []
+    id_list = []
+    date_list = []
     entry_list = []
+    total = 0
     
     print("Available entries:")  
-    for column in db.iter_cols(min_row=2, min_col=3, max_col=3):
-    # GET ID OF ENTRIES FIRST
-        for cell in column:
-            if cell.value != None:
-                for columnid in db.iter_cols(min_row=2, min_col=2, max_col=2):
-                # THEN GET THE ENTRY NAMES OF THEIR CORRESPONDING IDs
-                    for cellid in columnid:
-                        entry_list[cell] = cellid
-                        print(cell, cellid, end='\n')
+    for columnentry in db.iter_cols(min_row=2, min_col=2, max_col=2):
+    # GET THE ENTRY NAMES
+        for cellentry in columnentry:
+            if cellentry.value != None:
+                entry_list.append(cellentry)
+                total += 1
     
-    #INCOMPLETE // NEED TO FIND ID ACCORDING TO ROW NUMBER POSITION OF ENTRY
+    for columndate in db.iter_cols(min_row=2, min_col=3, max_col=3):
+    # GET THE ENTRY DATES
+        for celldate in columndate:
+            if celldate.value != None:
+                date_list.append(celldate)
+                total += 1
+                
+    for columnid in db.iter_cols(min_row=2, min_col=8, max_col=8):
+    # GET ID OF ENTRIES
+        for cellid in columnid:
+            if cellid.value != None:
+                id_list.append(cellid)
+                total += 1
     
-    entryselect = str(input('Select entry to change: ')).upper().strip()
-    dateselect = str(input('Select date to change (type by exact format): ')).strip()
-    idselect = str(input('Select ID to change (type by exact format): ')).strip() 
+    total_entry = total // 3
+    
+    for each_entry in range(total_entry):
+        inner_list = []
+        inner_list.append(entry_list[each_entry])
+        inner_list.append(date_list[each_entry])
+        inner_list.append(id_list[each_entry])
+        data_list.append(inner_list)
+        print(id_list[each_entry], date_list[each_entry], entry_list[each_entry], end='\n')
+    
+    entryselect = str(input('Select entry: ')).upper().strip()
+    dateselect = str(input('Select date (type by exact format): ')).strip()
+    idselect = str(input('Select ID (type by exact format): ')).strip() 
 
-    # NEED TO FIND ROW NUMBER POSITION OF ENTRY BY ID OR DATE
-    
-    # NEED IF STATEMENT FOR VALIDATING BOTH DATE & ID FORMAT
-    
-    # NEED TO STORE ENTRY, DATE, & ID IN ONE INNER LIST, PER ENTRY, THEN STORE ALL INNER LISTS IN 'entry_list'
-    
-    # NEED TO FIND THE CORRESPONDING ENTRY, DATE, & ID IN 'entry_list'
-    if entryselect not in entry_list:
-        print('Entry does not exist.')
-    else:
-        if dateselect not in entry_list.get(key=entryselect):
-            print('Date with the corresponding entry does not exist.')
+    for every_entry in data_list:
+        if every_entry[2] == entryselect:
+            if every_entry[1] == dateselect:
+                if every_entry[0] == idselect:
+                    print('Entry found.')
+                    index = data_list.index(every_entry) + 2
+                    db[get_column_letter(2) + str(index)] = name if name != None else db[get_column_letter(2) + str(index)].value
+                    db[get_column_letter(3) + str(index)] = ie.upper() if ie != None else db[get_column_letter(3) + str(index)].value
+                    db[get_column_letter(4) + str(index)] = value if value != None else db[get_column_letter(4) + str(index)].value
+                    db[get_column_letter(5) + str(index)] = category.upper() if category != None else db[get_column_letter(5) + str(index)].value
+                    db[get_column_letter(6) + str(index)] = delivered if delivered != None else db[get_column_letter(6) + str(index)].value
+                    db[get_column_letter(9) + str(index)] = f"{date()} / {time()}"
+                    balance(value, ie, delivered)
+                    break
+                else:
+                    print('ID does not match.')
+            else:
+                print('Date does not match.')
         else:
-            index = entry_list.index(entryselect)
-            db[get_column_letter(2) + str(index)] = name if name != None else db[get_column_letter(2) + str(index)].value
-            db[get_column_letter(3) + str(index)] = ie.upper() if ie != None else db[get_column_letter(3) + str(index)].value
-            db[get_column_letter(4) + str(index)] = value if value != None else db[get_column_letter(4) + str(index)].value
-            db[get_column_letter(5) + str(index)] = category.upper() if category != None else db[get_column_letter(5) + str(index)].value
-            db[get_column_letter(6) + str(index)] = delivered if delivered != None else db[get_column_letter(6) + str(index)].value
-            db[get_column_letter(9) + str(index)] = f"{date()} / {time()}"
-            balance(value, ie, delivered)
+            print('Entry does not match.')
         
-    read()
+    read_all()
 
     wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
     
@@ -201,7 +223,8 @@ def delete():
         db[get_column_letter(8) + str(index)].value = None
         balance(db[get_column_letter(5) + str(index)].value, 'E' if db[get_column_letter(3) + str(index)].value == 'I' else 'I', db[get_column_letter(7) + str(index)].value)
         
-    read()
+    read_all()
+    
     wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
 
 # TESTING
