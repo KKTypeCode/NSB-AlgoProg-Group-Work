@@ -11,14 +11,14 @@ class BudgetPage:
         
         self.income_label = tk.Label(master, text="Monthly Income:")
         self.income_label.pack(pady=5)
-
-        self.expense_label = tk.Label(master, text="Monthly Expenses:")
-        self.expense_label.pack(pady=5)
-
         
         self.income_entry = tk.Entry(master)
         self.income_entry.pack(pady=5)
 
+
+        self.expense_label = tk.Label(master, text="Monthly Expenses:")
+        self.expense_label.pack(pady=5)
+        
         self.expense_entry = tk.Entry(master)
         self.expense_entry.pack(pady=5)
 
