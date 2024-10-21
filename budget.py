@@ -17,6 +17,3 @@ def get_limit():     #Get the budget
 def get_spending():
     return spending.value
 
-print(get_limit())
-print(set_budget())
-print(get_limit())

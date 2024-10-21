@@ -1,4 +1,5 @@
 import tkinter as tk
+import subprocess as sp
 
 class FinanceDashboard:
     def __init__(self, root):
@@ -36,11 +37,11 @@ class FinanceDashboard:
         self.net_balance_value_label.place(x=180, y=200)
 
     def create_buttons(self):
-        self.view_income_button = tk.Button(self.root, text="Budget", font=("Arial", 12), command=lambda:'wdjawndw')
+        self.view_income_button = tk.Button(self.root, text="Budget", font=("Arial", 12), command=lambda:sp.run(["python", "budget_page.py"]))
         self.view_income_button.place(x=50, y=260)
-        self.view_expenses_button = tk.Button(self.root, text="I&E", font=("Arial", 12), command=lambda:"dwadwa")
+        self.view_expenses_button = tk.Button(self.root, text="I&E", font=("Arial", 12), command=lambda:)
         self.view_expenses_button.place(x=150, y=260)
-        self.add_transaction_button = tk.Button(self.root, text="Something", font=("Arial", 12), command=lambda:"dwadaw")
+        self.add_transaction_button = tk.Button(self.root, text="Entry Book", font=("Arial", 12), command=lambda:sp.run(["python", "transaction_history.py"]))
         self.add_transaction_button.place(x=280, y=260)
         self.reset_values_button = tk.Button(self.root, text="Reset Data", font=("Arial", 12), command=self.reset_values)
         self.reset_values_button.place(x=380, y=260)
