@@ -133,7 +133,7 @@ def change(name=None, ie=None, value=None, category=None, delivered=None):
     entry_list = []
     total = 0
     
-    print("Available entries:")  
+    """print("Available entries:")"""  
     for columnentry in db.iter_cols(min_row=2, min_col=2, max_col=2):
     # GET THE ENTRY NAMES
         for cellentry in columnentry:
@@ -200,7 +200,7 @@ def delete():
 
     entry_list = []
     
-    print("Available entries:")
+    """print("Available entries:")"""
     for column in db.iter_cols(min_row=2, max_row=db.max_row, min_col=2, max_col=2):
         for cell in column:
             if cell.value != None:
@@ -229,8 +229,8 @@ def delete():
 
 # SEARCH ENTRIES IN THE DATABASE
 
-def search():
-    wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
+def search(file_path='Database.xlsx'):
+    wb = load_workbook(f'NSB-AlgoProg-Group-Work/{file_path}')
     db = wb.active
     
     data_list = []
@@ -243,7 +243,7 @@ def search():
     id_list = []
     total = 0
     
-    print("Available entries:")  
+    """print("Available entries:")"""  
     for columnname in db.iter_cols(min_row=2, min_col=2, max_col=2):
     # GET THE ENTRY NAMES
         for cellname in columnname:
@@ -279,21 +279,22 @@ def search():
                 category_list.append(cellcategory.value)
                 total += 1
     
-    for columndelivered in db.iter_cols(min_row=2, min_col=7, max_col=7):
-    # GET THE ENTRY DELIVERY STATUS
-        for celldelivered in columndelivered:
-            if celldelivered.value != None:
-                delivered_list.append(celldelivered.value)
-                total += 1
+    if file_path == 'Database.xlsx':
+        for columndelivered in db.iter_cols(min_row=2, min_col=7, max_col=7):
+        # GET THE ENTRY DELIVERY STATUS
+            for celldelivered in columndelivered:
+                if celldelivered.value != None:
+                    delivered_list.append(celldelivered.value)
+                    total += 1
+        
+        for columnid in db.iter_cols(min_row=2, min_col=8, max_col=8):
+        # GET ID OF ENTRIES
+            for cellid in columnid:
+                if cellid.value != None:
+                    id_list.append(cellid.value)
+                    total += 1
     
-    for columnid in db.iter_cols(min_row=2, min_col=8, max_col=8):
-    # GET ID OF ENTRIES
-        for cellid in columnid:
-            if cellid.value != None:
-                id_list.append(cellid.value)
-                total += 1
-    
-    total_entry = total // 7
+    total_entry = total // 7 if file_path == 'Database.xlsx' else total // 5
     
     for each_entry in range(total_entry):
         inner_list = []
@@ -302,8 +303,8 @@ def search():
         inner_list.append(ie_list[each_entry])
         inner_list.append(value_list[each_entry])
         inner_list.append(category_list[each_entry])
-        inner_list.append(delivered_list[each_entry])
-        inner_list.append(id_list[each_entry])
+        inner_list.append(delivered_list[each_entry]) if file_path == 'Database.xlsx' else next
+        inner_list.append(id_list[each_entry]) if file_path == 'Database.xlsx' else next
         data_list.append(inner_list)
     
     read_all()
