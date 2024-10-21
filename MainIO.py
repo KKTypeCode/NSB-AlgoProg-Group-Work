@@ -229,7 +229,7 @@ def delete():
 
 # SEARCH ENTRIES IN THE DATABASE
 
-def search(file_path='Database.xlsx'):
+def search(file_path='Database.xlsx', typeofentry=None, entryselect=None):
     wb = load_workbook(f'NSB-AlgoProg-Group-Work/{file_path}')
     db = wb.active
     
@@ -294,7 +294,7 @@ def search(file_path='Database.xlsx'):
                     id_list.append(cellid.value)
                     total += 1
     
-    total_entry = total // 7 if file_path == 'Database.xlsx' else total // 5
+    total_entry = total // 7 if file_path != 'Recurring.xlsx' else total // 5
     
     for each_entry in range(total_entry):
         inner_list = []
@@ -303,61 +303,60 @@ def search(file_path='Database.xlsx'):
         inner_list.append(ie_list[each_entry])
         inner_list.append(value_list[each_entry])
         inner_list.append(category_list[each_entry])
-        inner_list.append(delivered_list[each_entry]) if file_path == 'Database.xlsx' else next
-        inner_list.append(id_list[each_entry]) if file_path == 'Database.xlsx' else next
+        inner_list.append(delivered_list[each_entry]) if file_path != 'Recurring.xlsx' else next
+        inner_list.append(id_list[each_entry]) if file_path != 'Recurring.xlsx' else next
         data_list.append(inner_list)
     
     read_all()
-    
-    typeofentry = str(input('Type of entry: ')).upper().strip()
-    entryselect = str(input('Select entry: ')).upper().strip() if (typeofentry != 'VALUE') else str(input('Select value: ').strip()).split()
+    finaltype = str(typeofentry).strip().upper()
+    entrychoice = str(entryselect).upper().strip() if (finaltype != 'VALUE') else str(entryselect).strip().split()
     
     for every_entry in data_list:
-        match typeofentry:
+        match finaltype:
             case 'NAME':
-                if every_entry[0] == entryselect:
+                if every_entry[0] == entrychoice:
                     # OUTPUT THE ENTRY
-                    print(every_entry)
+                    return every_entry
             case 'DATE':
-                if every_entry[1] == entryselect:
+                if every_entry[1] == entrychoice:
                     # OUTPUT THE ENTRY
-                    print(every_entry)
+                    return every_entry
             case 'IE':
-                if every_entry[2] == entryselect:
+                if every_entry[2] == entrychoice:
                     # OUTPUT THE ENTRY
-                    print(every_entry)
+                    return every_entry
             case 'VALUE':
                 # FORMAT: "SYMBOL AMOUNT"
-                match entryselect[0]:
+                match entrychoice[0]:
                     case '>':
                         # OUTPUT THE ENTRY
-                        print(every_entry) if every_entry[3] > float(entryselect[1]) else next
+                        return every_entry if every_entry[3] > float(entrychoice[1]) else next
                     case '<':
                         # OUTPUT THE ENTRY
-                        print(every_entry) if every_entry[3] < float(entryselect[1]) else next
+                        return every_entry if every_entry[3] < float(entrychoice[1]) else next
                     case '>=':
                         # OUTPUT THE ENTRY
-                        print(every_entry) if every_entry[3] >= float(entryselect[1]) else next
+                        return every_entry if every_entry[3] >= float(entrychoice[1]) else next
                     case '<=':
                         # OUTPUT THE ENTRY
-                        print(every_entry) if every_entry[3] <= float(entryselect[1]) else next
+                        return every_entry if every_entry[3] <= float(entrychoice[1]) else next
                     case '==':
                         # OUTPUT THE ENTRY
-                        print(every_entry) if every_entry[3] == float(entryselect[1]) else next
+                        return every_entry if every_entry[3] == float(entrychoice[1]) else next
             case 'CATEGORY':
-                if every_entry[4] == entryselect:
+                if every_entry[4] == entrychoice:
                     # OUTPUT THE ENTRY
-                    print(every_entry)
+                    return every_entry
             case 'DELIVERED':
-                if every_entry[5] == entryselect:
+                if every_entry[5] == entrychoice:
                     # OUTPUT THE ENTRY
-                    print(every_entry)
+                    return every_entry
             case 'ID':
-                if every_entry[6] == entryselect:
+                if every_entry[6] == entrychoice:
                     # OUTPUT THE ENTRY
-                    print(every_entry)
+                     return every_entry
             case other:
-                print('Invalid type of entry.')
+                return 'Invalid type of entry.'
 
     wb.close()
 
