@@ -76,7 +76,7 @@ def income(name, value=0, category='income', delivered=False):
 	while db.cell(row=row, column=col).value != None:
 		row += 1
 
-	db[get_column_letter(col) + str(row)] = name.upper()
+	db[get_column_letter(col) + str(row)]= name.upper()
 	db[get_column_letter(col+1) + str(row)] = date()
 	db[get_column_letter(col+2) + str(row)] = 'I'
 	db[get_column_letter(col+3) + str(row)] = value
