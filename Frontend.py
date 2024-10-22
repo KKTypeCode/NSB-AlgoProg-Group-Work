@@ -1,6 +1,6 @@
 import tkinter as tk
 import subprocess as sp
-import MainIO as io
+import pull_transaction as pt
 from openpyxl import load_workbook
 
 wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
@@ -45,11 +45,11 @@ class FinanceDashboard:
         self.view_income_button = tk.Button(self.root, text="Budget", font=("Arial", 12), command=lambda:sp.run(["python", "NSB-AlgoProg-Group-Work/budget_page.py"]))
         self.view_income_button.place(x=50, y=260)
         self.view_expenses_button = tk.Button(self.root, text="Entry Input", font=("Arial", 12), command=lambda:'ewduwhdewoide')
-        self.view_expenses_button.place(x=155, y=260)
+        self.view_expenses_button.place(x=160, y=260)
         self.add_transaction_button = tk.Button(self.root, text="Entry Book", font=("Arial", 12), command=lambda:sp.run(["python", "NSB-AlgoProg-Group-Work/transaction_history.py"]))
-        self.add_transaction_button.place(x=280, y=260)
-        # self.reset_values_button = tk.Button(self.root, text="Reset Data", font=("Arial", 12), command=self.reset_values)
-        # self.reset_values_button.place(x=380, y=260)
+        self.add_transaction_button.place(x=300, y=260)
+        self.add_recurring_button = tk.Button(self.root, text="Add Monthly Expenses", font=("Arial", 12), command=lambda:sp.run(["python", "NSB-AlgoProg-Group-Work/Recurring.py"]))
+        self.add_recurring_button.place(x=50, y=300)
 
     def reset_values(self):
         self.income = 0

@@ -2,7 +2,7 @@ from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 import datetime as dt
 import MainIO as io
-def pull_recurring(name=None, date_period=None, ie=None, value=None, category=None):
+def pull_recurring():
     # GET DATA FROM RECURRING DATABASE
     wb1 = load_workbook('NSB-AlgoProg-Group-Work/Recurring.xlsx')
     db1 = wb1.active
