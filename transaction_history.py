@@ -16,8 +16,10 @@ label = tk.Label(root,
                  justify=tk.CENTER,    
                  relief=tk.RAISED,                    
                 )
+label.pack(pady=10, padx= 10)
 treeview = ttk.Treeview()
 treeview = ttk.Treeview(columns=("name", "date", "ie", "value", "category", "delivered", "id"))
+treeview.pack(pady=70, padx=30)
 treeview.heading("#0", text="Index")
 treeview.column("#0", width=50)
 treeview.heading("name", text="Name")
@@ -34,6 +36,6 @@ treeview.column("id", width=150)
 
 
 
-label.pack(pady=20)
+label.pack(pady=20, padx= 20)
 treeview.pack()
 root.mainloop()
