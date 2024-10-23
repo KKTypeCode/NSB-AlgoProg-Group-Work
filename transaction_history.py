@@ -17,30 +17,20 @@ label = tk.Label(root,
                  relief=tk.RAISED,                    
                 )
 label.pack(pady=10, padx=10)
-
-# Add a frame to contain the search box and category dropdown
 search_frame = ttk.Frame(root)
 search_frame.pack(pady=10)
-
-# Add search entry box
 search_var = tk.StringVar()
 search_entry = ttk.Entry(search_frame, textvariable=search_var, width=30)
 search_entry.grid(row=0, column=0, padx=10)
-
-# Add category dropdown for search
 category_var = tk.StringVar()
 category_combobox = ttk.Combobox(search_frame, textvariable=category_var, state='readonly', width=20)
 category_combobox['values'] = ("Name", "Date", "Income/Expense", "Value", "Category", "Delivered", "ID")
 category_combobox.grid(row=0, column=1)
 category_combobox.current(0)
 
-# Add a search button
 def search_data():
-    # Get the search term and selected category
     search_term = search_var.get().lower()
     category = category_combobox.get()
-
-    # Mapping for column index based on selected category
     col_map = {
         "Name": 0,
         "Date": 1,
@@ -51,12 +41,8 @@ def search_data():
         "ID": 6
     }
     selected_col = col_map[category]
-
-    # Remove all current rows in the treeview
     for item in treeview.get_children():
         treeview.delete(item)
-
-    # Reload data with search filter
     from openpyxl import load_workbook
     wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
     db = wb.active
@@ -77,7 +63,6 @@ def search_data():
 search_button = ttk.Button(search_frame, text="Search", command=search_data)
 search_button.grid(row=0, column=2, padx=10)
 
-# Treeview setup
 treeview = ttk.Treeview(columns=("name", "date", "ie", "value", "category", "delivered", "id"))
 treeview.pack(pady=70, padx=30)
 treeview.heading("#0", text="Index")
