@@ -10,7 +10,7 @@ class FinanceDashboard:
     def __init__(self, root):
         self.root = root
         self.root.title("Finance Dashboard")
-        self.root.geometry("500x400")
+        self.root.geometry("600x600")
         self.root.config(bg="white")
         self.income = db['L3'].value
         self.expenses = db['L4'].value
