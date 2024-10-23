@@ -27,7 +27,7 @@ def gen_id_key():
 
 import datetime as dt
 
-def date():
+def date_now():
     current_date = dt.datetime.now().date()
     return current_date.strftime("%Y-%m-%d")
 
@@ -67,7 +67,7 @@ def balance(new_value, ie, delivered):
     wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
     wb.close()
     
-def income(name, value=0, category='income', delivered=False):
+def income(name, date, value, category='income', delivered=False):
 	wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
 	db = wb.active 
  
@@ -77,19 +77,19 @@ def income(name, value=0, category='income', delivered=False):
 		row += 1
 
 	db[get_column_letter(col) + str(row)]= name.upper()
-	db[get_column_letter(col+1) + str(row)] = date()
+	db[get_column_letter(col+1) + str(row)] = date
 	db[get_column_letter(col+2) + str(row)] = 'I'
 	db[get_column_letter(col+3) + str(row)] = value
 	db[get_column_letter(col+4) + str(row)] = category.upper()
 	db[get_column_letter(col+5) + str(row)] = delivered
 	db[get_column_letter(col+6) + str(row)] = gen_id_key()
-	db[get_column_letter(col+7) + str(row)] = f"{date()} / {time()}"
+	db[get_column_letter(col+7) + str(row)] = f"{date_now()} / {time()}"
 
 	balance(value, 'I', delivered)
 
 	wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
 
-def expense(name, value=0, category='expense', delivered=False):
+def expense(name, date, value, category='expense', delivered=False):
 	wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
 	db = wb.active 
  
@@ -99,13 +99,13 @@ def expense(name, value=0, category='expense', delivered=False):
 		row += 1
 
 	db[get_column_letter(col) + str(row)] = name.upper()
-	db[get_column_letter(col+1) + str(row)] = date()
+	db[get_column_letter(col+1) + str(row)] = date
 	db[get_column_letter(col+2) + str(row)] = 'E'
 	db[get_column_letter(col+3) + str(row)] = value
 	db[get_column_letter(col+4) + str(row)] = category.upper()
 	db[get_column_letter(col+5) + str(row)] = delivered
 	db[get_column_letter(col+6) + str(row)] = gen_id_key()
-	db[get_column_letter(col+7) + str(row)] = f"{date()} / {time()}"
+	db[get_column_letter(col+7) + str(row)] = f"{date_now()} / {time()}"
  
 	balance(value, 'E', delivered)
     
@@ -180,7 +180,7 @@ def change(name=None, ie=None, value=None, category=None, delivered=None):
                     db[get_column_letter(4) + str(index)] = value if value != None else db[get_column_letter(4) + str(index)].value
                     db[get_column_letter(5) + str(index)] = category.upper() if category != None else db[get_column_letter(5) + str(index)].value
                     db[get_column_letter(6) + str(index)] = delivered if delivered != None else db[get_column_letter(6) + str(index)].value
-                    db[get_column_letter(9) + str(index)] = f"{date()} / {time()}"
+                    db[get_column_letter(9) + str(index)] = f"{date_now()} / {time()}"
                     balance(value, ie, delivered)
                     break
                 else:

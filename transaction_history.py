@@ -34,33 +34,28 @@ treeview.column("delivered", width=100)
 treeview.heading("id", text="ID")
 treeview.column("id", width=150)
 
-from openpyxl import load_workbook
-
 def load_data():
     try:
-        workbook = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
-        sheet = workbook.active
+        from openpyxl import load_workbook
+        wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
+        db = wb.active
         
-        for index, row in enumerate(sheet.iter_rows(min_row=2, values_only=True), start=1):
+        for index, row in enumerate(db.iter_rows(min_row=2, values_only=True), start=1):
             treeview.insert("", "end", text=str(index), values=(
-                row[1] if row[1] is not None else '',  # name
-                row[2] if row[2] is not None else '',  # date
-                row[3] if row[3] is not None else '',  # ie
-                row[4] if row[4] is not None else '',  # value
-                row[5] if row[5] is not None else '',  # category
-                row[6] if row[6] is not None else '',  # delivered
-                row[7] if row[7] is not None else ''   # id
+                row[1] if row[1] is not None else '',
+                row[2] if row[2] is not None else '',
+                row[3] if row[3] is not None else '',
+                row[4] if row[4] is not None else '',
+                row[5] if row[5] is not None else '',
+                row[6] if row[6] is not None else '',
+                row[7] if row[7] is not None else ''
             ))
         
-        print("Data loaded successfully:")
         for item in treeview.get_children():
             print(treeview.item(item)['values'])
-    except FileNotFoundError:
-        print("Excel file not found. Please make sure 'transactions.xlsx' exists in the same directory.")
-    except Exception as e:
-        print(f"An error occurred while reading the Excel file: {e}")
+    except Exception:
+        print(f"An error occurred while reading the Excel file: {Exception}")
 
-# Call the function to load data when the application starts
 load_data()
 
 label.pack(pady=20, padx= 20)
