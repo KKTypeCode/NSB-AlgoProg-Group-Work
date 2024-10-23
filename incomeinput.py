@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import *
+from tkinter import * #type: ignore
 import MainIO as io
 from tkinter import messagebox
 
