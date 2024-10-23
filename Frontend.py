@@ -64,7 +64,7 @@ class FinanceDashboard:
     def create_buttons(self):
         self.view_income_button = tk.Button(self.root, text="Budget", font=("Arial", 12), command=lambda:sp.run(["python", "NSB-AlgoProg-Group-Work/budget_page.py"]))
         self.view_income_button.place(x=50, y=260)
-        self.view_expenses_button = tk.Button(self.root, text="Entry Input", font=("Arial", 12), command=lambda:'ewduwhdewoide')
+        self.view_expenses_button = tk.Button(self.root, text="Entry Input", font=("Arial", 12), command=lambda:sp.run(["python", "NSB-AlgoProg-Group-Work/entry_input.py"]))
         self.view_expenses_button.place(x=160, y=260)
         self.add_transaction_button = tk.Button(self.root, text="Entry Book", font=("Arial", 12), command=lambda:sp.run(["python", "NSB-AlgoProg-Group-Work/transaction_history.py"]))
         self.add_transaction_button.place(x=300, y=260)
