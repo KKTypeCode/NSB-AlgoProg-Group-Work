@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import *
+import MainIO as io
+from tkinter import messagebox
 
+'''
 def screenprnt():
     name = namestring.get()
     income = incomeint.get()
@@ -14,10 +17,18 @@ def screenprnt():
     dateint.set('')
     rateint.set('')
     catstring.set('')
+'''
 
 def sel():
     complete = completionBool.get()
     return complete
+
+def store_income():
+        try:
+            io.income(namestring.get(), dateint.get(), incomeint.get(), catstring.get(), completionBool.get())
+        except ValueError:
+            messagebox.showerror("Input Error", "Please enter valid inputs for all fields!")
+
 
 root = tk.Tk()
 root.geometry("900x600")
@@ -68,7 +79,7 @@ R2.pack(side = 'top',anchor = 'center', pady=5)
 
 
 #Button
-button = tk.Button(root, text='Enter', command = screenprnt)
+button = tk.Button(root, text='Enter', command = store_income)
 button.pack(side = 'top',anchor = 'center', pady = 5)
 
 root.mainloop()
