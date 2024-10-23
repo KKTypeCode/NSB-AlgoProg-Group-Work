@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 import openpyxl as ox
-import budget_page as bd
+import budget as bdgt
 class BudgetPage:
     def __init__(self, master):
         self.master = master
@@ -43,10 +43,10 @@ class BudgetPage:
         for item in treeview.get_children():
             print(treeview.item(item)['values'])
         
-        self.initial_budget = db['L5'].value
+        self.initial_budget = bdgt.get_limit()
         self.initial_budget_label = tk.Label(self.master, text=f"Initial Budget: ${self.initial_budget}", font=("Arial", 16, "bold"))
         self.initial_budget_label.place(x=50, y=310)
-        self.period_spending = db['L6'].value
+        self.period_spending = bdgt.get_spending()
         self.period_spending_label = tk.Label(self.master, text=f"Total Spending: ${self.period_spending}", font=("Arial", 16, "bold"))
         self.period_spending_label.place(x=50, y=340)
         self.remaining = self.initial_budget - self.period_spending
