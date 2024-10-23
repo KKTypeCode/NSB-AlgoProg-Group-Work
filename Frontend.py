@@ -43,24 +43,6 @@ class FinanceDashboard:
         self.net_balance_value_label = tk.Label(self.root, text=f"${self.net_balance}", font=("Arial", 16, "bold"), bg="white", fg=net_balance_color)
         self.net_balance_value_label.place(x=175, y=200)
 
-    def create_search_box(self):
-        self.search_label = tk.Label(self.root, text="Search Transactions:", font=("Arial", 14), bg="white")
-        self.search_label.place(x=50, y=340)
-        self.search_entry = tk.Entry(self.root, width=30)
-        self.search_entry.place(x=230, y=345)
-        self.search_button = tk.Button(self.root, text="Search", font=("Arial", 12), command=self.perform_search)
-        self.search_button.place(x=400, y=340)
-        self.search_result_label = tk.Label(self.root, text="", font=("Arial", 12), bg="white", fg="blue")
-        self.search_result_label.place(x=50, y=380)
-
-    def perform_search(self):
-        query = self.search_entry.get()
-        result = io.search() 
-        if result:
-            self.search_result_label.config(text=f"Found: {result}")
-        else:
-            self.search_result_label.config(text="No matching transactions found.")
-
     def create_buttons(self):
         self.view_income_button = tk.Button(self.root, text="Budget", font=("Arial", 12), command=lambda:sp.run(["python", "NSB-AlgoProg-Group-Work/budget_page.py"]))
         self.view_income_button.place(x=50, y=260)
