@@ -1,6 +1,7 @@
 import tkinter as tk
 import subprocess as sp
 import pull_transaction as pt
+import MainIO as io
 from openpyxl import load_workbook
 
 wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
@@ -41,6 +42,7 @@ class FinanceDashboard:
         self.net_balance_value_label = tk.Label(self.root, text=f"${self.net_balance}", font=("Arial", 16, "bold"), bg="white", fg=net_balance_color)
         self.net_balance_value_label.place(x=175, y=200)
 
+    """
     def create_search_box(self):
         self.search_label = tk.Label(self.root, text="Search Transactions:", font=("Arial", 14), bg="white")
         self.search_label.place(x=50, y=340)
@@ -53,12 +55,13 @@ class FinanceDashboard:
 
     def perform_search(self):
         query = self.search_entry.get()
-        result = pt.search_transaction(query) 
+        result = io.search() 
         if result:
             self.search_result_label.config(text=f"Found: {result}")
         else:
             self.search_result_label.config(text="No matching transactions found.")
-
+    """
+    
     def create_buttons(self):
         self.view_income_button = tk.Button(self.root, text="Budget", font=("Arial", 12), command=lambda:sp.run(["python", "NSB-AlgoProg-Group-Work/budget_page.py"]))
         self.view_income_button.place(x=50, y=260)
@@ -68,12 +71,6 @@ class FinanceDashboard:
         self.add_transaction_button.place(x=300, y=260)
         self.add_recurring_button = tk.Button(self.root, text="Add Monthly Expenses", font=("Arial", 12), command=lambda:sp.run(["python", "NSB-AlgoProg-Group-Work/Recurring.py"]))
         self.add_recurring_button.place(x=50, y=300)
-
-    def reset_values(self):
-        self.income = 0
-        self.expenses = 0
-        self.remain_budget = 0
-        self.update_dashboard()
 
     def update_dashboard(self):
         self.income_value_label.config(text=f"${self.income}")
