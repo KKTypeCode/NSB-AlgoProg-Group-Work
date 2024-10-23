@@ -20,7 +20,7 @@ class FinanceDashboard:
         self.header_label.pack(pady=10)
         self.create_dashboard()
         self.create_buttons()
-
+        pt.pull_recurring()
 
     def create_dashboard(self):
         self.income_label = tk.Label(self.root, text="Total Income:", font=("Arial", 16), bg="white")
@@ -42,7 +42,6 @@ class FinanceDashboard:
         self.net_balance_value_label = tk.Label(self.root, text=f"${self.net_balance}", font=("Arial", 16, "bold"), bg="white", fg=net_balance_color)
         self.net_balance_value_label.place(x=175, y=200)
 
-    """
     def create_search_box(self):
         self.search_label = tk.Label(self.root, text="Search Transactions:", font=("Arial", 14), bg="white")
         self.search_label.place(x=50, y=340)
@@ -60,7 +59,7 @@ class FinanceDashboard:
             self.search_result_label.config(text=f"Found: {result}")
         else:
             self.search_result_label.config(text="No matching transactions found.")
-    """
+
     
     def create_buttons(self):
         self.view_income_button = tk.Button(self.root, text="Budget", font=("Arial", 12), command=lambda:sp.run(["python", "NSB-AlgoProg-Group-Work/budget_page.py"]))
