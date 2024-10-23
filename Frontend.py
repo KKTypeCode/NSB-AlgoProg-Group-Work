@@ -20,6 +20,7 @@ class FinanceDashboard:
         self.header_label.pack(pady=10)
         self.create_dashboard()
         self.create_buttons()
+        self.create_search_box()
         pt.pull_recurring()
 
     def create_dashboard(self):
@@ -60,7 +61,6 @@ class FinanceDashboard:
         else:
             self.search_result_label.config(text="No matching transactions found.")
 
-    
     def create_buttons(self):
         self.view_income_button = tk.Button(self.root, text="Budget", font=("Arial", 12), command=lambda:sp.run(["python", "NSB-AlgoProg-Group-Work/budget_page.py"]))
         self.view_income_button.place(x=50, y=260)
