@@ -32,17 +32,18 @@ def search_data():
     search_term = search_var.get().lower()
     category = category_combobox.get()
     col_map = {
-        "Name": 0,
-        "Date": 1,
-        "Income/Expense": 2,
-        "Value": 3,
-        "Category": 4,
-        "Delivered": 5,
-        "ID": 6
+        "Name": 1,
+        "Date": 2,
+        "Income/Expense": 3,
+        "Value": 4,
+        "Category": 5,
+        "Delivered": 6,
+        "ID": 7
     }
     selected_col = col_map[category]
     for item in treeview.get_children():
         treeview.delete(item)
+
     from openpyxl import load_workbook
     wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
     db = wb.active
@@ -96,6 +97,7 @@ def load_data():
         ))
 
 load_data()
+search_data()
 
 label.pack(pady=20, padx=20)
 treeview.pack()
