@@ -1,6 +1,6 @@
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
-def add_recurring(name=None, date=None, ie='E', value=None, category=None):
+def add_recurring(name=None, date=None, value=None, category=None):
     workbook = load_workbook('NSB-AlgoProg-Group-Work/Recurring.xlsx')
     workingfile = workbook.active
     
@@ -12,7 +12,7 @@ def add_recurring(name=None, date=None, ie='E', value=None, category=None):
 
     workingfile[get_column_letter(col) + str(row)]= name.upper()
     workingfile[get_column_letter(col+1) + str(row)] = date
-    workingfile[get_column_letter(col+2) + str(row)] = ie.upper()
+    workingfile[get_column_letter(col+2) + str(row)] = 'E'
     workingfile[get_column_letter(col+3) + str(row)] = value
     workingfile[get_column_letter(col+4) + str(row)] = category.upper()
 
