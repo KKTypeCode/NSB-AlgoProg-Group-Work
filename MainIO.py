@@ -229,7 +229,7 @@ def delete():
 
 # SEARCH ENTRIES IN THE DATABASE
 
-def search(file_path='Database.xlsx', typeofentry=None, entryselect=None):
+def search(typeofentry=None, entryselect=None, file_path='Database.xlsx'):
     wb = load_workbook(f'NSB-AlgoProg-Group-Work/{file_path}')
     db = wb.active
     
@@ -347,7 +347,7 @@ def search(file_path='Database.xlsx', typeofentry=None, entryselect=None):
                 if every_entry[4] == entrychoice:
                     # OUTPUT THE ENTRY
                     return every_entry
-            case 'DELIVERED':
+            case 'COMPLETION OF TRANSACTION':
                 if every_entry[5] == entrychoice:
                     # OUTPUT THE ENTRY
                     return every_entry
