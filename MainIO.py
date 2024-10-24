@@ -232,7 +232,6 @@ def delete():
 def search(typeofentry=None, entryselect=None, file_path='Database.xlsx'):
     wb = load_workbook(f'NSB-AlgoProg-Group-Work/{file_path}')
     db = wb.active
-    
     data_list = []
     name_list = []
     date_list = []
