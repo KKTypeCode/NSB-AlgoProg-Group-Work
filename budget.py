@@ -8,7 +8,7 @@ spending = sheet1["L6"].value
 
 def set_budget(new_limit=0):
     sheet1["L5"].value = new_limit
-    wb.save("Database.xlsx")
+    wb.save("NSB-AlgoProg-Group-Work/Database.xlsx")
     wb.close
 
 def get_limit():

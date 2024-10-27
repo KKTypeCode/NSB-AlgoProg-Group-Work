@@ -1,93 +1,63 @@
 import tkinter as tk
-from tkinter import * #type: ignore
-import MainIO as io
 from tkinter import messagebox
+from tkinter import ttk
+import MainIO as io
 
-'''
-def screenprnt():
-    name = namestring.get()
-    income = incomeint.get()
-    date = dateint.get()
-    rate = rateint.get()
-    cat = catstring.get()
-    complete1 = sel()
-    print(name,income,date,rate,cat,complete1)
-    namestring.set('')
-    incomeint.set('')
-    dateint.set('')
-    rateint.set('')
-    catstring.set('')
-'''
+class Income:
+    def __init__(self, master, root):
+        self.root = root
+        self.master = master
+        self.master.title("Expense Entry Page")
+        self.master.geometry("500x400")
+        self.master.config(bg="white")
+       
+        self.spacing_label = tk.Label(master, text="                      ", bg="white")
+        self.spacing_label.pack(pady=35)
+        
+        self.name_label = tk.Label(master, text="Entry Name:", bg="white")
+        self.name_label.pack(pady=5)
+        
+        self.name_entry = tk.Entry(master)
+        self.name_entry.pack(pady=5)
 
-def sel():
-    complete = completionBool.get()
-    return complete
+        self.date_label = tk.Label(master, text="Date Period:", bg="white")
+        self.date_label.pack(pady=5)
+        
+        self.date_entry = tk.Entry(master)
+        self.date_entry.pack(pady=5)
+        
+        self.value_label = tk.Label(master, text="Value:", bg="white")
+        self.value_label.pack(pady=5)
+        
+        self.value_entry = tk.Entry(master)
+        self.value_entry.pack(pady=5)
+        
+        self.category_label = tk.Label(master, text="Category:", bg="white")
+        self.category_label.pack(pady=5)
 
-def store_income():
+        self.category_entry = ttk.Entry(master)
+        self.category_entry.pack(pady=5)
+        
+        self.delivered_label = tk.Label(master, text="Completion of Transaction:", bg="white")
+        self.delivered_label.pack(pady=5)
+        
+        self.delivered_entry = ttk.Entry(master)
+        self.delivered_entry.pack(pady=5)
+        
+        self.calculate_button = tk.Button(master, text="Add your expense", command=self.store_income)
+        self.calculate_button.pack(pady=20)
+
+        self.result_label = tk.Label(master, text="", bg="white")
+        self.result_label.pack(pady=5)
+        
+    def store_income(self):
         try:
-            io.income(namestring.get(), dateint.get(), incomeint.get(), catstring.get(), completionBool.get())
+            io.income(self.name_entry.get(), self.date_entry.get(), self.value_entry.get(), self.category_entry.get(), self.delivered_entry.get())
+            self.result_label.config(text=f"Your recurring transaction has been added!")
         except ValueError:
             messagebox.showerror("Input Error", "Please enter valid inputs for all fields!")
 
-
-root = tk.Tk()
-root.geometry("900x600")
-
-#Name Section
-namestring=tk.StringVar()
-namename = tk.Label(root, text = 'Input Name')
-nameentry = tk.Entry(root, textvariable= namestring)
-namename.pack(side = 'top',anchor = 'center', pady = 5)
-nameentry.pack(side = 'top',anchor = 'center', pady = 5)
-
-#Income Section
-incomeint=tk.StringVar()
-incomename = tk.Label(root, text = 'Input Income')
-incomeentry = tk.Entry(root, textvariable= incomeint)
-incomename.pack(side = 'top',anchor = 'center', pady = 5)
-incomeentry.pack(side = 'top',anchor = 'center', pady = 5)
-
-#Date Section
-dateint=tk.StringVar()
-datename = tk.Label(root, text = 'Input Date')
-dateentry = tk.Entry(root, textvariable= dateint)
-datename.pack(side = 'top',anchor = 'center', pady = 5)
-dateentry.pack(side = 'top',anchor = 'center', pady = 5)
-
-#Category Section
-catstring=tk.StringVar()
-catname = tk.Label(root, text = 'Input Category')
-catentry = tk.Entry(root, textvariable= catstring)
-catname.pack(side = 'top',anchor = 'center', pady = 5)
-catentry.pack(side = 'top',anchor = 'center', pady = 5)
-
-#Rate Section
-rateint=tk.StringVar()
-ratename = tk.Label(root, text = 'Input Rate/Date')
-rateentry = tk.Entry(root, textvariable= rateint)
-ratename.pack(side = 'top',anchor = 'center', pady = 5)
-rateentry.pack(side = 'top',anchor = 'center', pady = 5)
-
-#Completion of Transaction Section
-completionBool=tk.BooleanVar()
-completename = tk.Label(root, text = 'Input Completion of Transaction')
-completename.pack(side = 'top',anchor = 'center', pady = 5)
-R1 = Radiobutton(root, text='True',variable=completionBool, value=True, command=sel)
-R1.pack(side = 'top',anchor = 'center', pady=5)
-R2 = Radiobutton(root, text='False',variable=completionBool, value=False, command=sel)
-R2.pack(side = 'top',anchor = 'center', pady=5)
-
-
-#Button
-button = tk.Button(root, text='Enter', command = store_income)
-button.pack(side = 'top',anchor = 'center', pady = 5)
-
-root.mainloop()
-
-'''
-Name 
-Date 
-Value/Income
-Category 
-Completion of Transaction t/f
-'''
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = Income(root, root)
+    root.mainloop()

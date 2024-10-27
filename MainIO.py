@@ -41,7 +41,7 @@ def time():
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 
-def balance(new_value, ie, delivered):
+def balance(new_value, ie, delivered, cell):
     wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
     db = wb.active
     
@@ -66,8 +66,8 @@ def balance(new_value, ie, delivered):
     db[get_column_letter(12) + str(2)].value = balance
     wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
     wb.close()
-    
-def income(name, date, value, category='income', delivered=False):
+
+def income(name, date, value, category='income', delivered='False'):
 	wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
 	db = wb.active 
  
@@ -85,11 +85,10 @@ def income(name, date, value, category='income', delivered=False):
 	db[get_column_letter(col+6) + str(row)] = gen_id_key()
 	db[get_column_letter(col+7) + str(row)] = f"{date_now()} / {time()}"
 
-	balance(value, 'I', delivered)
-
+	balance(value, 'I', delivered, 3)
 	wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
 
-def expense(name, date, value, category='expense', delivered=False):
+def expense(name, date, value, category='expense', delivered='False'):
 	wb = load_workbook('NSB-AlgoProg-Group-Work/Database.xlsx')
 	db = wb.active 
  
@@ -106,9 +105,8 @@ def expense(name, date, value, category='expense', delivered=False):
 	db[get_column_letter(col+5) + str(row)] = delivered
 	db[get_column_letter(col+6) + str(row)] = gen_id_key()
 	db[get_column_letter(col+7) + str(row)] = f"{date_now()} / {time()}"
- 
-	balance(value, 'E', delivered)
     
+	balance(value, 'E', delivered, 2)
 	wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
 
 # MODIFY ENTRIES IN THE DATABASE
@@ -181,7 +179,8 @@ def change(name=None, ie=None, value=None, category=None, delivered=None):
                     db[get_column_letter(5) + str(index)] = category.upper() if category != None else db[get_column_letter(5) + str(index)].value
                     db[get_column_letter(6) + str(index)] = delivered if delivered != None else db[get_column_letter(6) + str(index)].value
                     db[get_column_letter(9) + str(index)] = f"{date_now()} / {time()}"
-                    balance(value, ie, delivered)
+                    iore = 3 if ie == 'I' else 4
+                    balance(value, ie, delivered, iore)
                     break
                 else:
                     print('ID does not match.')
@@ -221,14 +220,18 @@ def delete():
         db[get_column_letter(6) + str(index)].value = None
         db[get_column_letter(7) + str(index)].value = None
         db[get_column_letter(8) + str(index)].value = None
-        balance(db[get_column_letter(5) + str(index)].value, 'E' if db[get_column_letter(3) + str(index)].value == 'I' else 'I', db[get_column_letter(7) + str(index)].value)
-        
+        balance(db[get_column_letter(5) + str(index)].value, 'E' if db[get_column_letter(3) + str(index)].value == 'I' else 'I', db[get_column_letter(7) + str(index)].value, 2)
+        iore = 3 if db[get_column_letter(3) + str(index)].value == 'I' else 4
+        if iore == 3:
+            balance(db[get_column_letter(5) + str(index)].value, 'E', db[get_column_letter(7) + str(index)].value, 3)
+        elif iore == 4:
+            balance(db[get_column_letter(5) + str(index)].value, 'E', db[get_column_letter(7) + str(index)].value, 4)
     read_all()
     
     wb.save('NSB-AlgoProg-Group-Work/Database.xlsx')
 
 # SEARCH ENTRIES IN THE DATABASE
-
+"""
 def search(typeofentry=None, entryselect=None, file_path='Database.xlsx'):
     wb = load_workbook(f'NSB-AlgoProg-Group-Work/{file_path}')
     db = wb.active
@@ -242,7 +245,7 @@ def search(typeofentry=None, entryselect=None, file_path='Database.xlsx'):
     id_list = []
     total = 0
     
-    """print("Available entries:")"""  
+    print("Available entries:") 
     for columnname in db.iter_cols(min_row=2, min_col=2, max_col=2):
     # GET THE ENTRY NAMES
         for cellname in columnname:
@@ -353,14 +356,12 @@ def search(typeofentry=None, entryselect=None, file_path='Database.xlsx'):
             case 'ID':
                 if every_entry[6] == entrychoice:
                     # OUTPUT THE ENTRY
-                     return every_entry
+                    return every_entry
             case other:
                 return 'Invalid type of entry.'
 
     wb.close()
-
-# TESTING
-search()
+"""
 
 # NOTE:
 # CODE HAS NOT BEEN FULLY TESTED YET // STILL NEED MORE TESTING

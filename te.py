@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import * #type: ignore
 
 def sel():
    selection = "You selected the option " + str(var.get())
